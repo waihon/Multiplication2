@@ -7,10 +7,36 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct GameView: View {
     var body: some View {
-        Text("Hello, world!")
+        Text("Game")
             .padding()
+    }
+}
+
+struct SettingsView: View {
+    let callback: () -> Void
+
+    var body: some View {
+        Text("Settings")
+            .padding()
+        Button("Start Game") {
+            callback()
+        }
+    }
+}
+
+struct ContentView: View {
+    @State private var gameIsActive = false
+
+    var body: some View {
+        Text("Content")
+            .padding()
+        if gameIsActive {
+            GameView()
+        } else {
+            SettingsView(callback: { gameIsActive = true })
+        }
     }
 }
 
