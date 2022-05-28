@@ -58,6 +58,7 @@ struct ContentView: View {
                     TextField("Answer", text: $answerString)
                         .keyboardType(.numberPad)
                         .disabled(gameIsOver)
+                        .font(.largeTitle)
 
                     HStack {
                         Spacer()
