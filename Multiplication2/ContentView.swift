@@ -50,6 +50,7 @@ struct ContentView: View {
     @State private var questionNumber = 0
     @State private var score = 0
     @State private var answerString = ""
+    @FocusState private var isFocused: Bool
 
     var body: some View {
         if gameIsActive {
@@ -59,6 +60,7 @@ struct ContentView: View {
                         .keyboardType(.numberPad)
                         .disabled(gameIsOver)
                         .font(.largeTitle)
+                        .focused($isFocused)
 
                     HStack {
                         Spacer()
@@ -94,6 +96,10 @@ struct ContentView: View {
         answerString = ""
         gameIsOver = false
         gameIsActive = true
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            isFocused = true
+        }
     }
 
     func generateQuestions() {
