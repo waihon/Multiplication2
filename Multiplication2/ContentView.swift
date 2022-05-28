@@ -69,6 +69,11 @@ struct ContentView: View {
                     }
                 }
                 .navigationTitle(questions[questionNumber].text)
+                .alert("Game is Over", isPresented: $gameIsOver) {
+                    Button("Restart the Game", action: restartGame)
+                } message: {
+                    Text("Your score is \(score) out of \(questionCount).")
+                }
             }
         } else {
             SettingsView(callback: startGame)
@@ -119,6 +124,10 @@ struct ContentView: View {
         } else {
             gameIsOver = true
         }
+    }
+
+    func restartGame() {
+        gameIsActive = false
     }
 }
 
