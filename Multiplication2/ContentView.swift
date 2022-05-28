@@ -16,12 +16,29 @@ struct GameView: View {
 
 struct SettingsView: View {
     let callback: (Int, Int) -> Void
+    @State private var tablesUpTo = 2
+    @State private var questionCount = 8
 
     var body: some View {
-        Text("Settings")
-            .padding()
-        Button("Start Game") {
-            callback(8, 20)
+        NavigationView {
+            Form {
+                Section("Multiplication Tables") {
+                    Stepper("Up to \(tablesUpTo)", value: $tablesUpTo, in: 2...12)
+                }
+
+                Section("How Many Questions?") {
+                    TextField("Number of questions:", value: $questionCount, format: .number)
+                        .keyboardType(.numberPad)
+                }
+                HStack {
+                    Spacer()
+                    Button("Start Game") {
+                        callback(tablesUpTo, questionCount)
+                    }
+                    Spacer()
+                }
+            }
+            .navigationTitle("Settings")
         }
     }
 }
@@ -32,8 +49,6 @@ struct ContentView: View {
     @State private var questionCount = 10
 
     var body: some View {
-        Text("Content")
-            .padding()
         if gameIsActive {
             GameView()
         } else {
