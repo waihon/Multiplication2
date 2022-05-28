@@ -7,6 +7,11 @@
 
 import SwiftUI
 
+struct Question {
+    var text: String
+    var answer: Int
+}
+
 struct GameView: View {
     var body: some View {
         Text("Game")
@@ -16,8 +21,8 @@ struct GameView: View {
 
 struct SettingsView: View {
     let callback: (Int, Int) -> Void
-    @State private var tablesUpTo = 2
-    @State private var questionCount = 8
+    @State private var tablesUpTo = 8
+    @State private var questionCount = 10
 
     var body: some View {
         NavigationView {
@@ -47,6 +52,7 @@ struct ContentView: View {
     @State private var gameIsActive = false
     @State private var tablesUpTo = 8
     @State private var questionCount = 10
+    @State private var questions = [Question]()
 
     var body: some View {
         if gameIsActive {
@@ -62,7 +68,23 @@ struct ContentView: View {
         print(tablesUpTo)
         print(questionCount)
 
+        generateQuestions()
+
         gameIsActive = true
+    }
+
+    func generateQuestions() {
+        questions.removeAll()
+
+        for i in 0..<questionCount {
+            let number = Array(1...12).randomElement()!
+            let multiplier = Array(2...tablesUpTo).randomElement()!
+            let text = "What is \(number) x \(multiplier)?"
+            let answer = number * multiplier
+
+            questions.append(Question(text: text, answer: answer))
+            print(questions[i])
+        }
     }
 }
 
