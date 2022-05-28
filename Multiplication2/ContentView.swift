@@ -48,8 +48,8 @@ struct ContentView: View {
     @State private var questionCount = 10
     @State private var questions = [Question]()
     @State private var questionNumber = 0
+    @State private var score = 0
     @State private var answerString = ""
-
 
     var body: some View {
         if gameIsActive {
@@ -62,6 +62,8 @@ struct ContentView: View {
                     HStack {
                         Spacer()
                         Button("Submit Answer") {
+                            checkAnswer()
+                            nextQuestion()
                         }
                         Spacer()
                     }
@@ -82,6 +84,8 @@ struct ContentView: View {
         generateQuestions()
 
         questionNumber = 0
+        score = 0
+        answerString = ""
         gameIsOver = false
         gameIsActive = true
     }
@@ -97,6 +101,23 @@ struct ContentView: View {
 
             questions.append(Question(text: text, answer: answer))
             print(questions[i])
+        }
+    }
+
+    func checkAnswer() {
+        let answer = Int(answerString) ?? 0
+
+        if answer == questions[questionNumber].answer {
+            score += 1
+        }
+    }
+
+    func nextQuestion() {
+        if (questionNumber + 1) < questionCount {
+            answerString = ""
+            questionNumber += 1
+        } else {
+            gameIsOver = true
         }
     }
 }
