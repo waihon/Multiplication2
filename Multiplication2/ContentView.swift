@@ -12,13 +12,6 @@ struct Question {
     var answer: Int
 }
 
-struct GameView: View {
-    var body: some View {
-        Text("Game")
-            .padding()
-    }
-}
-
 struct SettingsView: View {
     let callback: (Int, Int) -> Void
     @State private var tablesUpTo = 8
@@ -50,13 +43,31 @@ struct SettingsView: View {
 
 struct ContentView: View {
     @State private var gameIsActive = false
+    @State private var gameIsOver = false
     @State private var tablesUpTo = 8
     @State private var questionCount = 10
     @State private var questions = [Question]()
+    @State private var questionNumber = 0
+    @State private var answerString = ""
+
 
     var body: some View {
         if gameIsActive {
-            GameView()
+            NavigationView {
+                Form {
+                    TextField("Answer", text: $answerString)
+                        .keyboardType(.numberPad)
+                        .disabled(gameIsOver)
+
+                    HStack {
+                        Spacer()
+                        Button("Submit Answer") {
+                        }
+                        Spacer()
+                    }
+                }
+                .navigationTitle(questions[questionNumber].text)
+            }
         } else {
             SettingsView(callback: startGame)
         }
@@ -70,6 +81,8 @@ struct ContentView: View {
 
         generateQuestions()
 
+        questionNumber = 0
+        gameIsOver = false
         gameIsActive = true
     }
 
